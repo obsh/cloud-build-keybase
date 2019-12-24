@@ -4,16 +4,28 @@
 docker build -t keybase-cloud-build-bot .
 ```
 
-## Run
+## Run in GCP
 ```bash
-docker run -it --rm \
+docker run --rm \
+    -e KEYBASE_USERNAME="<user name>" \
+    -e KEYBASE_PAPERKEY="<keybase paper key>" \
+    -e KEYBASE_SERVICE="1" \
+    -e PROJECT_ID="<GCP project ID>" \
+    -e SUBSCTIPTION_ID="<subscription ID>" \
+    -e TEAM_NAME="<keybase team name>" \
+    keybase-cloud-build-bot cloud-build-bot
+```
+
+## Run with service account key
+```bash
+docker run --rm \
     -v $PWD/service_account:/service_account \
     -e GOOGLE_APPLICATION_CREDENTIALS="/service_account/<service account file>.json" \
     -e KEYBASE_USERNAME="<user name>" \
     -e KEYBASE_PAPERKEY="<keybase paper key>" \
     -e KEYBASE_SERVICE="1" \
-    -e PROJECT_ID="" \
-    -e SUBSCTIPTION_ID="" \
-    -e TEAM_NAME="" \
+    -e PROJECT_ID="<GCP project ID>" \
+    -e SUBSCTIPTION_ID="<subscription ID>" \
+    -e TEAM_NAME="<keybase team name>" \
     keybase-cloud-build-bot cloud-build-bot
 ```
