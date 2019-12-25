@@ -1,3 +1,5 @@
+# Cloud build notifications to Keybase
+Bot that listens to GCP cloud build notifications and publish it to Keybase team
 
 ## Build container
 ```bash
