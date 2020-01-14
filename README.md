@@ -18,6 +18,8 @@ docker run --rm \
     keybase-cloud-build-bot cloud-build-bot
 ```
 
+optionally you can also pass `CHANNEL` environment variable
+
 ## Run with service account key
 ```bash
 docker run --rm \
@@ -31,3 +33,5 @@ docker run --rm \
     -e TEAM_NAME="<keybase team name>" \
     keybase-cloud-build-bot cloud-build-bot
 ```
+
+optionally you can also pass `CHANNEL` environment variable

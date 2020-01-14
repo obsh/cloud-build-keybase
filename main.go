@@ -23,18 +23,25 @@ func main() {
 	var projectID string
 	var subID string
 	var teamName string
+	var channelPtr *string
 	var err error
 
 	flag.StringVar(&kbLoc, "keybase", "keybase", "the location of the Keybase app")
 	flag.StringVar(&projectID, "project_id", os.Getenv("PROJECT_ID"), "GCP project ID")
 	flag.StringVar(&subID, "subscription_id", os.Getenv("SUBSCTIPTION_ID"), "GCP PubSub subscription name")
 	flag.StringVar(&teamName, "team_name", os.Getenv("TEAM_NAME"), "Keybase team name to send message to")
+	flag.StringVar(channelPtr, "channel", os.Getenv("CHANNEL"), "Keybase channel name to send message to")
 	flag.Parse()
 
 	if projectID == "" || subID == "" || teamName == "" {
 		fail("All three project_id, subscription_id and team_name must be specified,\n" +
 			"using either flags -project_id, -subscription_id, -team_name,\n" +
 			"or environmet variables PROJECT_ID, SUBSCTIPTION_ID, TEAM_NAME")
+	}
+
+	// ignore empty channel value
+	if *channelPtr == "" {
+		channelPtr = nil
 	}
 
 	if kbc, err = kbchat.Start(kbchat.RunOptions{KeybaseLocation: kbLoc}); err != nil {
@@ -65,7 +72,7 @@ func main() {
 			build.Status, build.LogURL)
 
 		fmt.Printf("sending message '%s' to team: '%s'\n", message, teamName)
-		if _, err = kbc.SendMessageByTeamName(teamName, nil, message); err != nil {
+		if _, err = kbc.SendMessageByTeamName(teamName, channelPtr, message); err != nil {
 			fail("Error sending message; %s", err.Error())
 		}
 
