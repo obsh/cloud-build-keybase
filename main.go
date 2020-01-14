@@ -30,7 +30,7 @@ func main() {
 	flag.StringVar(&projectID, "project_id", os.Getenv("PROJECT_ID"), "GCP project ID")
 	flag.StringVar(&subID, "subscription_id", os.Getenv("SUBSCTIPTION_ID"), "GCP PubSub subscription name")
 	flag.StringVar(&teamName, "team_name", os.Getenv("TEAM_NAME"), "Keybase team name to send message to")
-	flag.StringVar(channelPtr, "channel", os.Getenv("CHANNEL"), "Keybase channel name to send message to")
+	channelPtr = flag.String("channel", os.Getenv("CHANNEL"), "Keybase channel name to send message to")
 	flag.Parse()
 
 	if projectID == "" || subID == "" || teamName == "" {
