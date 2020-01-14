@@ -58,9 +58,10 @@ func main() {
 			fail("Error decoding message; %s", err.Error())
 		}
 
-		message := fmt.Sprintf("Project *%s*, Repo: *%s*, Status: *%s*\ncheck build details: %s",
-			build.SourceProvenance.ResolvedRepoSource.ProjectID,
-			build.SourceProvenance.ResolvedRepoSource.RepoName,
+		message := fmt.Sprintf("Project *%s*, Repo: *%s*, Branch: *%s*, Status: *%s*\ncheck build details: %s",
+			build.ProjectID,
+			build.Substitutions.REPO_NAME,
+			build.Substitutions.BRANCH_NAME,
 			build.Status, build.LogURL)
 
 		fmt.Printf("sending message '%s' to team: '%s'\n", message, teamName)
@@ -133,7 +134,14 @@ type CloudBuildMessage struct {
 		SubstitutionOption string `json:"substitutionOption"`
 		Logging            string `json:"logging"`
 	} `json:"options"`
-	LogURL string   `json:"logUrl"`
+	LogURL        string `json:"logUrl"`
+	Substitutions struct {
+		BRANCH_NAME string `json:"BRANCH_NAME"`
+		COMMIT_SHA  string `json:"COMMIT_SHA"`
+		REPO_NAME   string `json:"REPO_NAME"`
+		REVISION_ID string `json:"REVISION_ID"`
+		SHORT_SHA   string `json:"SHORT_SHA"`
+	}
 	Tags   []string `json:"tags"`
 	Timing struct {
 		BUILD struct {
