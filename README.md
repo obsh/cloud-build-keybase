@@ -1,12 +1,14 @@
-# Cloud build notifications to Keybase
-Bot that listens to GCP cloud build notifications and publish it to Keybase team.
+# Pub/Sub notifications to Keybase
+Bot that listens to Pub/Sub notifications and publish it to Keybase team#channel.
 
-## Build container
+## Bot
+
+### Build container
 ```bash
 docker build -t keybase-cloud-build-bot .
 ```
 
-## Run in GCP
+### Run in GCP
 ```bash
 docker run --rm \
     -e KEYBASE_USERNAME="<user name>" \
@@ -20,7 +22,7 @@ docker run --rm \
 
 optionally you can also pass `CHANNEL` environment variable
 
-## Run with service account key
+### Run with service account key
 ```bash
 docker run --rm \
     -v $PWD/service_account:/service_account \
@@ -35,3 +37,17 @@ docker run --rm \
 ```
 
 optionally you can also pass `CHANNEL` environment variable
+
+## Helper function
+
+There are ready to use functions to parse cloud-builds notifications and monitoring notifications and re-publish them to the bot topic.
+
+### Cloud Build messages
+```
+gcloud functions deploy ReportCloudBuild --runtime go113 --trigger-topic cloud-builds --set-env-vars 'NOTIFICATIONS_PROJECT=<>,NOTIFICATIONS_TOPIC=<>'
+```
+
+### Monitoring alerts
+```
+gcloud functions deploy ReportAlerts --runtime go113 --trigger-topic <ALERTS TOPIC> --set-env-vars 'NOTIFICATIONS_PROJECT=<>,NOTIFICATIONS_TOPIC=<>'
+```
